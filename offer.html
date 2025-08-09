@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Offers — Wrong Pour</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="script.js" defer></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #000 0%, #111 50%, #222 100%);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      margin-bottom: 40px;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      background: linear-gradient(135deg, gold, #ffd700);
+      color: black;
+      font-weight: bold;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: gold;
+    }
+
+    .brand p {
+      margin: 0;
+      color: #ccc;
+      font-size: 0.9rem;
+    }
+
+    .nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .nav a:hover {
+      background: rgba(255, 215, 0, 0.1);
+      color: gold;
+      transform: translateY(-2px);
+    }
+
+    .nav a.active {
+      background: gold;
+      color: black;
+    }
+
+    /* Card Section */
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .card h3 {
+      color: gold;
+      font-size: 2rem;
+      margin-top: 0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Offers Styles */
+    .offers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .offer-item {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+      border: 2px solid rgba(255, 215, 0, 0.3);
+      border-radius: 12px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .offer-item:hover {
+      transform: translateY(-5px);
+      border-color: gold;
+      box-shadow: 0 15px 30px rgba(255, 215, 0, 0.2);
+    }
+
+    .offer-item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, gold, #ffd700, gold);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .offer-title {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: gold;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .offer-badge {
+      background: gold;
+      color: black;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .offer-description {
+      color: #ccc;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .offer-details {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .offer-discount {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: gold;
+    }
+
+    .offer-validity {
+      font-size: 0.9rem;
+      color: #999;
+    }
+
+    .claim-btn {
+      background: linear-gradient(135deg, gold, #ffd700);
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .claim-btn:hover {
+      background: linear-gradient(135deg, #ffed4e, gold);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+
+    .claim-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Empty State */
+    .empty-offers {
+      text-align: center;
+      padding: 60px 20px;
+      color: #666;
+    }
+
+    .empty-offers h4 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #999;
+    }
+
+    .empty-offers p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #888;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 215, 0, 0.1);
+      margin-top: 40px;
+    }
+
+    /* Loading State */
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 215, 0, 0.3);
+      border-top: 3px solid gold;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Success Message */
+    .success-message {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+      font-weight: bold;
+      display: none;
+      animation: slideDown 0.5s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+
+      .nav {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .offers {
+        grid-template-columns: 1fr;
+      }
+
+      .offer-details {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+
+      .card h3 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="logo">WP</div>
+        <div>
+          <h1>Wrong Pour</h1>
+          <p>Offers & Promotions</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="offers.html" class="active">Offers</a>
+        <a href="order.html">Order</a>
+      </nav>
+    </header>
+
+    <div class="success-message" id="successMessage">
+      Offer claimed successfully! Redirecting to order page...
+    </div>
+
+    <section class="card">
+      <h3 style="margin-top:0">Current Offers</h3>
+      <div id="offersList" class="offers" style="margin-top:12px">
+        <!-- Loading state will be shown initially -->
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <p>Loading exclusive offers...</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">© 2025 Wrong Pour • Premium Liquor Experience</footer>
+  </div>
+
+  <script>
+    // Sample offers data (in a real app, this would come from an API)
+    const OFFERS_DATA = [
+      {
+        id: 'seasonal-25',
+        title: 'Seasonal Celebration',
+        badge: 'Limited Time',
+        description: 'Celebrate the season with our premium collection. Get amazing discounts on selected whiskeys and wines.',
+        discount: '25% OFF',
+        validity: 'Valid until Dec 31, 2025',
+        minOrder: 2000,
+        applicable: ['Whiskey', 'Wine', 'Brandy']
+      },
+      {
+        id: 'bulk-discount',
+        title: 'Bulk Order Special',
+        badge: 'Best Value',
+        description: 'Order 3 or more bottles and save big! Perfect for parties, celebrations, or stocking up your collection.',
+        discount: '5% OFF',
+        validity: 'Valid on orders above ₹3000',
+        minOrder: 3000,
+        applicable: ['All Items']
+      },
+      {
+        id: 'weekend-priority',
+        title: 'Weekend Express',
+        badge: 'Fast Delivery',
+        description: 'Weekend orders get priority delivery within 2 hours. Premium service for your spontaneous celebrations.',
+        discount: 'Free Delivery',
+        validity: 'Weekends only',
+        minOrder: 1500,
+        applicable: ['All Items']
+      },
+      {
+        id: 'premium-member',
+        title: 'Premium Member Exclusive',
+        badge: 'VIP',
+        description: 'Exclusive access to rare spirits and limited editions. Join our premium membership for special privileges.',
+        discount: '15% OFF',
+        validity: 'Members only',
+        minOrder: 5000,
+        applicable: ['Premium Collection']
+      }
+    ];
+
+    function renderOffers() {
+      const offersList = document.getElementById('offersList');
+      
+      // Show loading state initially
+      setTimeout(() => {
+        if (OFFERS_DATA && OFFERS_DATA.length > 0) {
+          offersList.innerHTML = '';
+          
+          OFFERS_DATA.forEach(offer => {
+            const offerElement = createOfferElement(offer);
+            offersList.appendChild(offerElement);
+          });
+        } else {
+          showEmptyState();
+        }
+      }, 1500); // Simulate loading time
+    }
+
+    function createOfferElement(offer) {
+      const offerDiv = document.createElement('div');
+      offerDiv.className = 'offer-item';
+      offerDiv.innerHTML = `
+        <div class="offer-title">
+          ${offer.title}
+          <span class="offer-badge">${offer.badge}</span>
+        </div>
+        <div class="offer-description">${offer.description}</div>
+        <div class="offer-details">
+          <div>
+            <div class="offer-discount">${offer.discount}</div>
+            <div class="offer-validity">${offer.validity}</div>
+          </div>
+          <button class="claim-btn" onclick="claimOffer('${offer.id}', '${offer.title}')">
+            Claim Offer
+          </button>
+        </div>
+      `;
+      return offerDiv;
+    }
+
+    function showEmptyState() {
+      const offersList = document.getElementById('offersList');
+      offersList.innerHTML = `
+        <div class="empty-offers">
+          <h4>No Active Offers</h4>
+          <p>We're currently updating our offers. Check back soon for exciting deals on premium spirits!</p>
+        </div>
+      `;
+    }
+
+    function claimOffer(offerId, offerTitle) {
+      try {
+        // Show success message
+        const successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'block';
+        
+        // In a real app, you would:
+        // 1. Store the claimed offer in localStorage or send to server
+        // 2. Apply the discount to the user's session
+        // localStorage.setItem('claimedOffer', JSON.stringify({id: offerId, title: offerTitle}));
+        
+        // Simulate processing time and redirect
+        setTimeout(() => {
+          // Add offer parameter to URL for order page to recognize
+          window.location.href = `order.html?offer=${encodeURIComponent(offerId)}&title=${encodeURIComponent(offerTitle)}`;
+        }, 2000);
+        
+        console.log(`Offer claimed: ${offerTitle} (ID: ${offerId})`);
+        
+      } catch (error) {
+        console.error('Error claiming offer:', error);
+        alert('Sorry, there was an error claiming the offer. Please try again.');
+      }
+    }
+
+    // Initialize offers when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      renderOffers();
+      console.log('Wrong Pour offers page loaded successfully');
+    });
+
+    // Add keyboard navigation for accessibility
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'none';
+      }
+    });
+
+    // Utility function for currency formatting
+    function formatCurrency(amount) {
+      return '₹' + amount.toLocaleString('en-IN');
+    }
+
+    // Auto-refresh offers every 5 minutes (in a real app)
+    // setInterval(() => {
+    //   renderOffers();
+    // }, 300000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Place Your Order - Premium Spirits Delivery</title>
+    <meta name="description" content="Complete your premium spirits order with secure payment and fast delivery.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d4af37;
+            --primary-dark: #b8860b;
+            --secondary: #ffd700;
+            --accent: #8b7355;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --dark: #1a1a1a;
+            --dark-light: #2d2d2d;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-light: #e5e5e5;
+            --text-muted: #9ca3af;
+            --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-medium: 0 8px 25px rgba(0, 0, 0, 0.3);
+            --shadow-heavy: 0 20px 40px rgba(0, 0, 0, 0.4);
+            --border-radius: 12px;
+            --border-radius-large: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'Playfair Display', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #2d2d2d 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #000;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .brand-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .brand-text p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0 4rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Order Form Layout */
+        .order-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .order-form {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-large);
+            padding: 2rem;
+            box-shadow: var(--shadow-medium);
+        }
+
+        .order-summary {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--border-radius-large);
+            padding: 2rem;
+            box-shadow: var(--shadow-medium);
+            position: sticky;
+            top: 100px;
+        }
+
+        /* Form Sections */
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .section-description {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Form Fields */
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-grid.two-column {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .required {
+            color: var(--error);
+        }
+
+        .form-input, .form-select, .form-textarea {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 0.875rem 1rem;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+
+        .form-input.error, .form-select.error, .form-textarea.error {
+            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .form-input.success, .form-select.success, .form-textarea.success {
+            border-color: var(--success);
+            background: rgba(34, 197, 94, 0.05);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-select {
+            cursor: pointer;
+        }
+
+        /* Error Messages */
+        .error-message {
+            color: var(--error);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .error-message.show {
+            display: flex;
+        }
+
+        /* Success Messages */
+        .success-message {
+            color: var(--success);
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+            display: none;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .success-message.show {
+            display: flex;
+        }
+
+        /* Payment Method Cards */
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .payment-method {
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .payment-method:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--primary);
+        }
+
+        .payment-method.selected {
+            border-color: var(--primary);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .payment-method input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .payment-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        /* Payment Details */
+        .payment-details {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--glass-border);
+            display: none;
+        }
+
+        .payment-details.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        /* Age Verification */
+        .age-verification {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .age-verification input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+        }
+
+        .age-verification label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* Order Summary */
+        .summary-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .cart-items {
+            margin-bottom: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info h4 {
+            color: var(--text-light);
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .item-details {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .item-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .price-breakdown {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .price-row.total {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .delivery-info {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .delivery-info h4 {
+            color: var(--success);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .delivery-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Order Button */
+        .order-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #000;
+            border: none;
+            border-radius: var(--border-radius);
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        .order-button:active {
+            transform: translateY(0);
+        }
+
+        .order-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .order-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .order-button:hover::before {
+            left: 100%;
+        }
+
+        /* Loading States */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(212, 175, 55, 0.3);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Order Confirmation */
+        .order-confirmation {
+            display: none;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 2px solid var(--success);
+            border-radius: var(--border-radius-large);
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .order-confirmation.show {
+            display: block;
+        }
+
+        .confirmation-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .confirmation-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--success), #16a34a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            margin: 0 auto 1rem;
+        }
+
+        .confirmation-title {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+
+        .order-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .detail-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .order-id {
+            background: rgba(212, 175, 55, 0.15);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .order-id strong {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .order-layout {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .order-summary {
+                position: static;
+                order: -1;
+            }
+
+            .form-grid.two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .breadcrumb {
+                justify-content: center;
+            }
+
+            .order-form, .order-summary {
+                padding: 1.5rem;
+            }
+
+            .payment-methods {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Input Enhancements */
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-input.with-icon {
+            padding-right: 40px;
+        }
+
+        /* Security Badge */
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            color: var(--info);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="brand">
+                    <div class="logo">WP</div>
+                    <div class="brand-text">
+                        <h1>Wrong Pour</h1>
+                        <p>Premium Spirits Collection</p>
+                    </div>
+                </div>
+                <div class="breadcrumb">
+                    <a href="#" onclick="goBack()">← Back to Collection</a>
+                    <span>•</span>
+                    <span>Place Order</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title">Complete Your Order</h1>
+                <p class="page-subtitle">Just a few details to get your premium spirits delivered</p>
+            </div>
+
+            <!-- Order Layout -->
+            <div class="order-layout">
+                <!-- Order Form -->
+                <div class="order-form">
+                    <form id="orderForm">
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">👤</div>
+                                <div>
+                                    <h3 class="section-title">Personal Information</h3>
+                                    <p class="section-description">Your contact details for order updates</p>
+                                </div>
+                            </div>
+                            <div class="form-grid two-column">
+                                <div class="form-group">
+                                    <label class="form-label">First Name <span class="required">*</span></label>
+                                    <input type="text" class="form-input" id="firstName" name="firstName" required>
+                                    <div class="error-message">Please enter your first name</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Last Name <span class="required">*</span></label>
+                                    <input type="text" class="form-input" id="lastName" name="lastName" required>
+                                    <div class="error-message">Please enter your last name</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email Address <span class="required">*</span></label>
+                                    <input type="email" class="form-input" id="email" name="email" required>
+                                    <div class="error-message">Please enter a valid email address</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number <span class="required">*</span></label>
+                                    <input type="tel" class="form-input" id="phone" name="phone" placeholder="+91 XXXXX XXXXX" required>
+                                    <div class="error-message">Please enter a valid phone number</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Information -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">🚚</div>
+                                <div>
+                                    <h3 class="section-title">Delivery Information</h3>
+                                    <p class="section-description">Where should we deliver your order?</p>
+                                </div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Complete Address <span class="required">*</span></label>
+                                    <textarea class="form-textarea" id="address" name="address" placeholder="House/Flat Number, Building Name, Street Name" required></textarea>
+                                    <div class="error-message">Please enter your complete address</div>
+                                </div>
+                                <div class="form-grid two-column">
+                                    <div class="form-group">
+                                        <label class="form-label">City <span class="required">*</span></label>
+                                        <input type="text" class="form-input" id="city" name="city" required>
+                                        <div class="error-message">Please enter your city</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">State <span class="required">*</span></label>
+                                        <select class="form-select" id="state" name="state" required>
+                                            <option value="">Select State</option>
+                                            <option value="AP">Andhra Pradesh</option>
+                                            <option value="AR">Arunachal Pradesh</option>
+                                            <option value="AS">Assam</option>
+                                            <option value="BR">Bihar</option>
+                                            <option value="CT">Chhattisgarh</option>
+                                            <option value="GA">Goa</option>
+                                            <option value="GJ">Gujarat</option>
+                                            <option value="HR">Haryana</option>
+                                            <option value="HP">Himachal Pradesh</option>
+                                            <option value="JH">Jharkhand</option>
+                                            <option value="KA">Karnataka</option>
+                                            <option value="KL">Kerala</option>
+                                            <option value="MP">Madhya Pradesh</option>
+                                            <option value="MH">Maharashtra</option>
+                                            <option value="MN">Manipur</option>
+                                            <option value="ML">Meghalaya</option>
+                                            <option value="MZ">Mizoram</option>
+                                            <option value="NL">Nagaland</option>
+                                            <option value="OR">Odisha</option>
+                                            <option value="PB">Punjab</option>
+                                            <option value="RJ">Rajasthan</option>
+                                            <option value="SK">Sikkim</option>
+                                            <option value="TN">Tamil Nadu</option>
+                                            <option value="TG">Telangana</option>
+                                            <option value="TR">Tripura</option>
+                                            <option value="UP">Uttar Pradesh</option>
+                                            <option value="UT">Uttarakhand</option>
+                                            <option value="WB">West Bengal</option>
+                                        </select>
+                                        <div class="error-message">Please select your state</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">PIN Code <span class="required">*</span></label>
+                                        <input type="text" class="form-input" id="pincode" name="pincode" pattern="[0-9]{6}" maxlength="6" required>
+                                        <div class="error-message">Please enter a valid 6-digit PIN code</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Landmark (Optional)</label>
+                                        <input type="text" class="form-input" id="landmark" name="landmark" placeholder="Near Metro Station, Mall, etc.">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Address Type</label>
+                                    <select class="form-select" id="addressType" name="addressType">
+                                        <option value="home">Home</option>
+                                        <option value="office">Office</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Preferences -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">⏰</div>
+                                <div>
+                                    <h3 class="section-title">Delivery Preferences</h3>
+                                    <p class="section-description">When would you like to receive your order?</p>
+                                </div>
+                            </div>
+                            <div class="form-grid two-column">
+                                <div class="form-group">
+                                    <label class="form-label">Preferred Delivery Date</label>
+                                    <input type="date" class="form-input" id="deliveryDate" name="deliveryDate">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Preferred Time Slot</label>
+                                    <select class="form-select" id="timeSlot" name="timeSlot">
+                                        <option value="anytime">Anytime</option>
+                                        <option value="morning">Morning (9 AM - 12 PM)</option>
+                                        <option value="afternoon">Afternoon (12 PM - 4 PM)</option>
+                                        <option value="evening">Evening (4 PM - 8 PM)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Special Delivery Instructions</label>
+                                <textarea class="form-textarea" id="deliveryInstructions" name="deliveryInstructions" placeholder="Leave with security, ring doorbell, etc."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon">💳</div>
+                                <div>
+                                    <h3 class="section-title">Payment Method</h3>
+                                    <p class="section-description">Choose your preferred payment option</p>
+                                </div>
+                            </div>
+                            <div class="payment-methods">
+                                <label class="payment-method">
+                                    <input type="radio" name="paymentMethod" value="cod" checked>
+                                    <div class="payment-icon">💵</div>
+                                    <div class="payment-name">Cash on Delivery</div>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="paymentMethod" value="card">
+                                    <div class="payment-icon">💳</div>
+                                    <div class="payment-name">Credit/Debit Card</div>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="paymentMethod" value="upi">
+                                    <div class="payment-icon">📱</div>
+                                    <div class="payment-name">UPI Payment</div>
+                                </label>
+                                <label class="payment-method">
+                                    <input type="radio" name="paymentMethod" value="netbanking">
+                                    <div class="payment-icon">🏦</div>
+                                    <div class="payment-name">Net Banking</div>
+                                </label>
+                            </div>
+
+                            <!-- Card Payment Details -->
+                            <div class="payment-details" id="cardDetails">
+                                <div class="form-grid two-column">
+                                    <div class="form-group">
+                                        <label class="form-label">Card Number <span class="required">*</span></label>
+                                        <input type="text" class="form-input" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Cardholder Name <span class="required">*</span></label>
+                                        <input type="text" class="form-input" id="cardName" name="cardName" placeholder="Name as on card">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Expiry Date <span class="required">*</span></label>
+                                        <input type="text" class="form-input" id="expiryDate" name="expiryDate" placeholder="MM/YY" maxlength="5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">CVV <span class="required">*</span></label>
+                                        <input type="text" class="form-input" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- UPI Payment Details -->
+                            <div class="payment-details" id="upiDetails">
+                                <div class="form-group">
+                                    <label class="form-label">UPI ID <span class="required">*</span></label>
+                                    <input type="text" class="form-input" id="upiId" name="upiId" placeholder="yourname@paytm">
+                                </div>
+                            </div>
+
+                            <!-- Net Banking Details -->
+                            <div class="payment-details" id="netbankingDetails">
+                                <div class="form-group">
+                                    <label class="form-label">Select Bank <span class="required">*</span></label>
+                                    <select class="form-select" id="bankName" name="bankName">
+                                        <option value="">Choose your bank</option>
+                                        <option value="sbi">State Bank of India</option>
+                                        <option value="hdfc">HDFC Bank</option>
+                                        <option value="icici">ICICI Bank</option>
+                                        <option value="axis">Axis Bank</option>
+                                        <option value="kotak">Kotak Mahindra Bank</option>
+                                        <option value="pnb">Punjab National Bank</option>
+                                        <option value="other">Other Bank</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="security-badge">
+                                <span>🔒</span>
+                                <span>Your payment information is secured with 256-bit SSL encryption</span>
+                            </div>
+                        </div>
+
+                        <!-- Age Verification -->
+                        <div class="form-section">
+                            <div class="age-verification">
+                                <input type="checkbox" id="ageVerification" name="ageVerification" required>
+                                <label for="ageVerification">
+                                    I confirm that I am 21 years or older and legally allowed to purchase alcoholic beverages in my jurisdiction. I understand that valid age verification may be required upon delivery.
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Terms and Privacy -->
+                        <div class="form-section">
+                            <div class="age-verification">
+                                <input type="checkbox" id="termsAgreement" name="termsAgreement" required>
+                                <label for="termsAgreement">
+                                    I agree to the <a href="#" style="color: var(--primary);">Terms & Conditions</a> and <a href="#" style="color: var(--primary);">Privacy Policy</a>. I consent to receive order updates via SMS and email.
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <div class="summary-header">
+                        <h3 class="summary-title">Order Summary</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">Review your items</p>
+                    </div>
+
+                    <div class="cart-items">
+                        <div class="cart-item">
+                            <div class="item-info">
+                                <h4>Premium Single Malt Whisky</h4>
+                                <div class="item-details">750ml • Aged 12 Years • Qty: 1</div>
+                            </div>
+                            <div class="item-price">₹4,500</div>
+                        </div>
+                        <div class="cart-item">
+                            <div class="item-info">
+                                <h4>Premium Vodka</h4>
+                                <div class="item-details">750ml • Triple Distilled • Qty: 1</div>
+                            </div>
+                            <div class="item-price">₹2,800</div>
+                        </div>
+                        <div class="cart-item">
+                            <div class="item-info">
+                                <h4>Craft Beer Pack</h4>
+                                <div class="item-details">330ml x 6 bottles • IPA • Qty: 1</div>
+                            </div>
+                            <div class="item-price">₹1,200</div>
+                        </div>
+                    </div>
+
+                    <div class="price-breakdown">
+                        <div class="price-row">
+                            <span>Subtotal</span>
+                            <span>₹8,500</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Delivery Charges</span>
+                            <span>₹200</span>
+                        </div>
+                        <div class="price-row">
+                            <span>GST (18%)</span>
+                            <span>₹1,530</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Discount</span>
+                            <span style="color: var(--success);">-₹500</span>
+                        </div>
+                        <div class="price-row total">
+                            <span>Total Amount</span>
+                            <span>₹9,730</span>
+                        </div>
+                    </div>
+
+                    <div class="delivery-info">
+                        <h4>🚚 Estimated Delivery</h4>
+                        <p>2-4 business days</p>
+                        <p style="margin-top: 0.5rem;">Free delivery on orders above ₹5,000</p>
+                    </div>
+
+                    <button type="submit" form="orderForm" class="order-button" id="placeOrderBtn">
+                        <span>Place Order - ₹9,730</span>
+                    </button>
+
+                    <div class="security-badge">
+                        <span>🛡️</span>
+                        <span>100% Secure & Safe Payment</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="loading" id="loadingState">
+                <div class="spinner"></div>
+                <p>Processing your order...</p>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Please do not refresh the page</p>
+            </div>
+
+            <!-- Order Confirmation -->
+            <div class="order-confirmation" id="orderConfirmation">
+                <div class="confirmation-header">
+                    <div class="confirmation-icon">✓</div>
+                    <h2 class="confirmation-title">Order Confirmed!</h2>
+                    <p style="color: var(--text-muted); font-size: 1rem;">Thank you for your order. We'll get it delivered soon!</p>
+                </div>
+
+                <div class="order-id">
+                    <strong>Order ID: #WP-2024-<span id="orderNumber"></span></strong>
+                </div>
+
+                <div class="order-details">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Order Details</h3>
+                    <div class="detail-row">
+                        <span class="detail-label">Customer Name:</span>
+                        <span class="detail-value" id="confirmName">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value" id="confirmEmail">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Phone:</span>
+                        <span class="detail-value" id="confirmPhone">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Delivery Address:</span>
+                        <span class="detail-value" id="confirmAddress">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Payment Method:</span>
+                        <span class="detail-value" id="confirmPayment">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Order Total:</span>
+                        <span class="detail-value" style="color: var(--primary); font-weight: 700;">₹9,730</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Estimated Delivery:</span>
+                        <span class="detail-value" id="confirmDelivery">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">IP Address:</span>
+                        <span class="detail-value" id="confirmIP">-</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Order Timestamp:</span>
+                        <span class="detail-value" id="confirmTimestamp">-</span>
+                    </div>
+                </div>
+
+                <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: var(--border-radius); padding: 1rem; margin: 1.5rem 0; text-align: center;">
+                    <h4 style="color: var(--success); margin-bottom: 0.5rem;">📧 Confirmation Email Sent</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">We've sent order details and tracking information to your email.</p>
+                </div>
+
+                <button class="continue-shopping-btn" onclick="window.location.reload()">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Get user's IP address
+        let userIP = 'Loading...';
+        
+        // Fetch IP address from a free API
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                userIP = data.ip;
+            })
+            .catch(() => {
+                userIP = 'Unable to detect';
+            });
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const requiredFields = ['firstName', 'lastName', 'email', 'phone', 'address', 'city', 'state', 'pincode'];
+            
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const errorMsg = field.parentElement.querySelector('.error-message');
+                
+                if (!field.value.trim()) {
+                    field.classList.add('error');
+                    errorMsg.style.display = 'flex';
+                    isValid = false;
+                } else {
+                    field.classList.remove('error');
+                    field.classList.add('success');
+                    errorMsg.style.display = 'none';
+                }
+            });
+
+            // Email validation
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email.value && !emailRegex.test(email.value)) {
+                email.classList.add('error');
+                email.parentElement.querySelector('.error-message').textContent = 'Please enter a valid email address';
+                email.parentElement.querySelector('.error-message').style.display = 'flex';
+                isValid = false;
+            }
+
+            // Phone validation
+            const phone = document.getElementById('phone');
+            const phoneRegex = /^[\+]?[0-9]{10,15}$/;
+            if (phone.value && !phoneRegex.test(phone.value.replace(/\s/g, ''))) {
+                phone.classList.add('error');
+                phone.parentElement.querySelector('.error-message').textContent = 'Please enter a valid phone number';
+                phone.parentElement.querySelector('.error-message').style.display = 'flex';
+                isValid = false;
+            }
+
+            // PIN code validation
+            const pincode = document.getElementById('pincode');
+            const pincodeRegex = /^[0-9]{6}$/;
+            if (pincode.value && !pincodeRegex.test(pincode.value)) {
+                pincode.classList.add('error');
+                pincode.parentElement.querySelector('.error-message').textContent = 'Please enter a valid 6-digit PIN code';
+                pincode.parentElement.querySelector('.error-message').style.display = 'flex';
+                isValid = false;
+            }
+
+            // Age verification
+            const ageVerification = document.getElementById('ageVerification');
+            if (!ageVerification.checked) {
+                alert('Please confirm that you are 21 years or older.');
+                isValid = false;
+            }
+
+            // Terms agreement
+            const termsAgreement = document.getElementById('termsAgreement');
+            if (!termsAgreement.checked) {
+                alert('Please agree to the Terms & Conditions and Privacy Policy.');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Payment method handling
+        document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Remove selected class from all payment methods
+                document.querySelectorAll('.payment-method').forEach(method => {
+                    method.classList.remove('selected');
+                });
+                
+                // Add selected class to chosen method
+                this.closest('.payment-method').classList.add('selected');
+                
+                // Hide all payment details
+                document.querySelectorAll('.payment-details').forEach(detail => {
+                    detail.classList.remove('show');
+                });
+                
+                // Show relevant payment details
+                const paymentValue = this.value;
+                if (paymentValue === 'card') {
+                    document.getElementById('cardDetails').classList.add('show');
+                } else if (paymentValue === 'upi') {
+                    document.getElementById('upiDetails').classList.add('show');
+                } else if (paymentValue === 'netbanking') {
+                    document.getElementById('netbankingDetails').classList.add('show');
+                }
+            });
+        });
+
+        // Set default payment method as selected
+        document.querySelector('input[name="paymentMethod"][value="cod"]').closest('.payment-method').classList.add('selected');
+
+        // Card number formatting
+        document.getElementById('cardNumber').addEventListener('input', function() {
+            let value = this.value.replace(/\s/g, '').replace(/[^0-9]/gi, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            if (formattedValue !== this.value) {
+                this.value = formattedValue;
+            }
+        });
+
+        // Expiry date formatting
+        document.getElementById('expiryDate').addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            this.value = value;
+        });
+
+        // CVV validation
+        document.getElementById('cvv').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // PIN code validation
+        document.getElementById('pincode').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', function() {
+            let value = this.value.replace(/[^0-9+\s-]/g, '');
+            this.value = value;
+        });
+
+        // Set minimum delivery date to tomorrow
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        document.getElementById('deliveryDate').min = tomorrow.toISOString().split('T')[0];
+        document.getElementById('deliveryDate').value = tomorrow.toISOString().split('T')[0];
+
+        // Form submission
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+
+            // Show loading state
+            document.querySelector('.order-layout').style.display = 'none';
+            document.getElementById('loadingState').style.display = 'block';
+
+            // Simulate processing time
+            setTimeout(() => {
+                // Hide loading state
+                document.getElementById('loadingState').style.display = 'none';
+                
+                // Generate order number
+                const orderNumber = Math.random().toString(36).substr(2, 8).toUpperCase();
+                document.getElementById('orderNumber').textContent = orderNumber;
+                
+                // Fill confirmation details
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                document.getElementById('confirmName').textContent = `${firstName} ${lastName}`;
+                document.getElementById('confirmEmail').textContent = document.getElementById('email').value;
+                document.getElementById('confirmPhone').textContent = document.getElementById('phone').value;
+                
+                const address = document.getElementById('address').value;
+                const city = document.getElementById('city').value;
+                const state = document.getElementById('state').value;
+                const pincode = document.getElementById('pincode').value;
+                document.getElementById('confirmAddress').textContent = `${address}, ${city}, ${state} - ${pincode}`;
+                
+                const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+                const paymentText = {
+                    'cod': 'Cash on Delivery',
+                    'card': 'Credit/Debit Card',
+                    'upi': 'UPI Payment',
+                    'netbanking': 'Net Banking'
+                };
+                document.getElementById('confirmPayment').textContent = paymentText[paymentMethod];
+                
+                const deliveryDate = document.getElementById('deliveryDate').value;
+                const timeSlot = document.getElementById('timeSlot').value;
+                const timeSlotText = {
+                    'anytime': 'Anytime',
+                    'morning': 'Morning (9 AM - 12 PM)',
+                    'afternoon': 'Afternoon (12 PM - 4 PM)',
+                    'evening': 'Evening (4 PM - 8 PM)'
+                };
+                document.getElementById('confirmDelivery').textContent = `${new Date(deliveryDate).toLocaleDateString('en-IN')} - ${timeSlotText[timeSlot]}`;
+                
+                document.getElementById('confirmIP').textContent = userIP;
+                document.getElementById('confirmTimestamp').textContent = new Date().toLocaleString('en-IN');
+                
+                // Show confirmation
+                document.getElementById('orderConfirmation').classList.add('show');
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+            }, 3000);
+        });
+
+        // Back function
+        function goBack() {
+            if (document.getElementById('orderConfirmation').classList.contains('show')) {
+                window.location.reload();
+            } else {
+                window.history.back();
+            }
+        }
+
+        // Input event listeners for real-time validation
+        document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.hasAttribute('required') && !this.value.trim()) {
+                    this.classList.add('error');
+                    this.parentElement.querySelector('.error-message').style.display = 'flex';
+                } else if (this.value.trim()) {
+                    this.classList.remove('error');
+                    this.classList.add('success');
+                    this.parentElement.querySelector('.error-message').style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

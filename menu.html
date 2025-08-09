@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Wrong Pour — Menu | Luxury Pre-Booking</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo {
+      background: gold;
+      color: black;
+      font-weight: bold;
+      padding: 8px;
+      border-radius: 6px;
+    }
+    .nav a {
+      margin: 0 10px;
+      color: white;
+      text-decoration: none;
+    }
+    .nav a:hover {
+      color: gold;
+    }
+    .nav a.active {
+      color: gold;
+      border-bottom: 2px solid gold;
+    }
+
+    /* Apple-like Intro Section */
+    .intro-section {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      background: linear-gradient(to bottom, #000, #111);
+      padding-top: 80px; /* so it doesn't hide under header */
+    }
+    .intro-section h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+    .intro-section p {
+      max-width: 600px;
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+    .bottle-images {
+      display: flex;
+      gap: 20px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .bottle {
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      padding: 10px;
+    }
+    .bottle img {
+      width: 150px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0px 4px 20px rgba(255, 215, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    .bottle img:hover {
+      transform: scale(1.05);
+    }
+    .bottle-name {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: gold;
+    }
+    .bottle-price {
+      margin-top: 4px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .selection-prompt {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      color: #fff;
+      font-weight: bold;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    /* Selection States */
+    .bottle.selected {
+      transform: scale(1.1);
+    }
+
+    .bottle.selected img {
+      border: 3px solid gold;
+      box-shadow: 0px 6px 30px rgba(255, 215, 0, 0.6);
+    }
+
+    .bottle.selected::after {
+      content: '✓ SELECTED';
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: gold;
+      color: black;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      animation: selectPulse 0.5s ease;
+      z-index: 5;
+    }
+
+    @keyframes selectPulse {
+      0% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1); }
+    }
+
+    .proceed-btn {
+      background: linear-gradient(135deg, gold, #ffd700);
+      color: black;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+      text-transform: uppercase;
+    }
+
+    .proceed-btn:hover {
+      background: linear-gradient(135deg, #ffed4e, gold);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    }
+
+    .selected-item-display {
+      color: gold;
+      font-size: 1.3rem;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .selected-item-name {
+      font-size: 1.4rem;
+    }
+
+    .selected-item-price {
+      font-size: 1.1rem;
+      color: #ccc;
+    }
+
+    /* Cart Summary */
+    .cart-summary {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 15px;
+      border-radius: 10px;
+      min-width: 200px;
+      display: none;
+    }
+
+    .cart-summary.show {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Content Section */
+    .hero {
+      padding: 60px 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+    }
+    .btn, .cta {
+      display: inline-block;
+      padding: 10px 20px;
+      background: gold;
+      color: black;
+      text-decoration: none;
+      margin: 5px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .btn:hover, .cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+    .cta {
+      background: white;
+      color: black;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: #888;
+    }
+
+    /* Loading State */
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+      position: relative;
+    }
+
+    .loading::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      border: 2px solid gold;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+    }
+
+    @keyframes spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .intro-section h1 {
+        font-size: 2rem;
+      }
+      .bottle img {
+        width: 120px;
+      }
+      .bottle-images {
+        gap: 15px;
+      }
+      .cart-summary {
+        position: relative;
+        right: auto;
+        margin: 20px auto;
+        max-width: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <div class="logo">WP</div>
+      <div>
+        <h1>Wrong Pour</h1>
+        <p>Luxury pre-booking platform — curated selection of premium spirits</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="offers.html">Offers</a>
+      <a href="menu.html" class="active">Menu</a>
+      <a href="order.html">Order</a>
+    </nav>
+  </header>
+
+  <!-- Cart Summary -->
+  <div class="cart-summary" id="cartSummary">
+    <h4>Your Selection</h4>
+    <div id="cartContent">No items selected</div>
+  </div>
+
+  <!-- Apple-like Menu Section -->
+  <section class="intro-section">
+    <h1>Premium Liquor Menu</h1>
+    <p>Explore our curated selection of premium spirits, each carefully chosen for the discerning connoisseur.<br>
+    Select your preferred spirit and proceed to order.</p>
+
+    <div class="bottle-images">
+      <div class="bottle" onclick="selectItem('Whiskey', 2499)">
+        <img src="bottle1.jpeg" alt="Premium Whiskey">
+        <div class="bottle-name">Premium Whiskey</div>
+        <div class="bottle-price">₹2,499</div>
+      </div>
+      <div class="bottle" onclick="selectItem('Vodka', 1899)">
+        <img src="bottle2.jpeg" alt="Luxury Vodka">
+        <div class="bottle-name">Luxury Vodka</div>
+        <div class="bottle-price">₹1,899</div>
+      </div>
+      <div class="bottle" onclick="selectItem('Rum', 2199)">
+        <img src="bottle3.jpeg" alt="Aged Rum">
+        <div class="bottle-name">Aged Rum</div>
+        <div class="bottle-price">₹2,199</div>
+      </div>
+      <div class="bottle" onclick="selectItem('Gin', 1799)">
+        <img src="bottle4.jpeg" alt="Artisan Gin">
+        <div class="bottle-name">Artisan Gin</div>
+        <div class="bottle-price">₹1,799</div>
+      </div>
+      <div class="bottle" onclick="selectItem('Tequila', 2799)">
+        <img src="bottle5.jpeg" alt="Premium Tequila">
+        <div class="bottle-name">Premium Tequila</div>
+        <div class="bottle-price">₹2,799</div>
+      </div>
+      <div class="bottle" onclick="selectItem('Wine', 3299)">
+        <img src="bottle6.jpeg" alt="Vintage Wine">
+        <div class="bottle-name">Vintage Wine</div>
+        <div class="bottle-price">₹3,299</div>
+      </div>
+      <div class="bottle" onclick="selectItem('Brandy', 2999)">
+        <img src="bottle7.jpeg" alt="Fine Brandy">
+        <div class="bottle-name">Fine Brandy</div>
+        <div class="bottle-price">₹2,999</div>
+      </div>
+    </div>
+
+    <div class="selection-prompt">
+      SELECT YOUR PREFERRED SPIRIT
+    </div>
+  </section>
+
+  <!-- Enhanced Content Section -->
+  <section class="hero">
+    <div class="card">
+      <h2>Curated spirits • Discreet delivery • Premium service</h2>
+      <p class="lead">We provide an elegant pre-order experience for premium liquor.  
+      Select from our curated collection, schedule delivery, and receive secure, timely  
+      service with complete discretion.</p>
+      <div class="actions">
+        <a class="btn" href="menu.html">Browse Menu</a>
+        <a class="cta" href="order.html">Place Order</a>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Menu Highlights</h3>
+      <ul>
+        <li>Hand-picked premium spirits from renowned distilleries</li>
+        <li>Competitive pricing with transparent costs</li>
+        <li>Secure selection and easy order processing</li>
+        <li>Expert curation for authentic taste experiences</li>
+        <li>Responsive customer support throughout your journey</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="footer">
+    © 2025 Wrong Pour • Demo for Useless Projects (serious presentation)
+  </footer>
+
+  <script>
+    let selectedItem = null;
+    let selectedPrice = 0;
+
+    function selectItem(itemName, price) {
+      try {
+        // Remove previous selection
+        document.querySelectorAll('.bottle').forEach(bottle => {
+          bottle.classList.remove('selected');
+        });
+        
+        // Add selection to clicked bottle
+        const clickedBottle = event.currentTarget;
+        clickedBottle.classList.add('selected');
+        
+        // Store selection
+        selectedItem = itemName;
+        selectedPrice = price;
+        
+        // Update cart summary
+        updateCartSummary(itemName, price);
+        
+        // Update selection prompt
+        const prompt = document.querySelector('.selection-prompt');
+        prompt.innerHTML = `
+          <div class="selected-item-display">
+            <div class="selected-item-name">SELECTED: ${itemName}</div>
+            <div class="selected-item-price">₹${price.toLocaleString('en-IN')}</div>
+            <button onclick="proceedToOrder()" class="proceed-btn">Proceed to Order</button>
+          </div>
+        `;
+        
+        // Smooth scroll to show the selection
+        prompt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+      } catch (error) {
+        console.error('Selection error:', error);
+        // Fallback to original behavior
+        window.location.href = `order.html?item=${encodeURIComponent(itemName)}&price=${price}`;
+      }
+    }
+
+    function updateCartSummary(itemName, price) {
+      const cartSummary = document.getElementById('cartSummary');
+      const cartContent = document.getElementById('cartContent');
+      
+      cartContent.innerHTML = `
+        <div style="margin-bottom: 10px;">
+          <strong>${itemName}</strong><br>
+          <span style="color: gold;">₹${price.toLocaleString('en-IN')}</span>
+        </div>
+        <hr style="border-color: rgba(255,255,255,0.2);">
+        <div style="margin-top: 10px;">
+          <strong>Total: ₹${price.toLocaleString('en-IN')}</strong>
+        </div>
+      `;
+      
+      cartSummary.classList.add('show');
+    }
+
+    function proceedToOrder() {
+      if (selectedItem && selectedPrice) {
+        // Add loading state
+        const prompt = document.querySelector('.selection-prompt');
+        prompt.innerHTML = `
+          <div class="selected-item-display loading">
+            <div class="selected-item-name">Processing ${selectedItem}...</div>
+            <div class="selected-item-price">₹${selectedPrice.toLocaleString('en-IN')}</div>
+          </div>
+        `;
+        
+        // Redirect after brief loading animation
+        setTimeout(() => {
+          window.location.href = `order.html?item=${encodeURIComponent(selectedItem)}&price=${selectedPrice}`;
+        }, 1000);
+      }
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // In a real website, you'd restore from localStorage:
+      // const saved = localStorage.getItem('selectedProduct');
+      // const savedPrice = localStorage.getItem('selectedPrice');
+      // if (saved && savedPrice) {
+      //   selectItem(saved, parseInt(savedPrice));
+      // }
+      
+      console.log('Wrong Pour menu loaded successfully');
+      
+      // Hide cart summary initially
+      document.getElementById('cartSummary').classList.remove('show');
+    });
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && selectedItem) {
+        proceedToOrder();
+      }
+      if (e.key === 'Escape') {
+        // Clear selection
+        document.querySelectorAll('.bottle').forEach(bottle => {
+          bottle.classList.remove('selected');
+        });
+        document.querySelector('.selection-prompt').innerHTML = 'SELECT YOUR PREFERRED SPIRIT';
+        document.getElementById('cartSummary').classList.remove('show');
+        selectedItem = null;
+        selectedPrice = 0;
+      }
+    });
+
+    // Enhanced hover effects
+    document.querySelectorAll('.bottle').forEach(bottle => {
+      bottle.addEventListener('mouseenter', function() {
+        if (!this.classList.contains('selected')) {
+          this.style.transform = 'translateY(-5px)';
+        }
+      });
+      
+      bottle.addEventListener('mouseleave', function() {
+        if (!this.classList.contains('selected')) {
+          this.style.transform = 'translateY(0)';
+        }
+      });
+    });
+
+    // Utility function for currency formatting
+    function formatCurrency(amount) {
+      return '₹' + amount.toLocaleString('en-IN');
+    }
+
+    // Add smooth scrolling for navigation
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+  </script>
+</body>
+</html>

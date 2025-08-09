@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Liquor Store - Premium Spirits Delivered</title>
+    <meta name="description" content="Discover premium whisky, vodka, rum and fine spirits. Fast delivery, authentic products, and exceptional service.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Hero section with customizable background image */
+        .hero-main {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4)), 
+                        var(--hero-bg-image, url('https://images.unsplash.com/photo-1569529465841-dfecdab7503b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')) center/cover no-repeat;
+            background-attachment: fixed;
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Background image customization panel */
+        .bg-customizer {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(15, 15, 16, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            max-width: 300px;
+            transition: all 0.3s ease;
+            transform: translateX(100%);
+        }
+
+        .bg-customizer.active {
+            transform: translateX(0);
+        }
+
+        .bg-customizer h3 {
+            margin: 0 0 15px 0;
+            color: var(--accent);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .bg-input-group {
+            margin-bottom: 15px;
+        }
+
+        .bg-input-group label {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bg-url-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .bg-url-input:focus {
+            border-color: var(--accent);
+        }
+
+        .bg-preset-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .bg-preset {
+            aspect-ratio: 16/9;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            background-size: cover;
+            background-position: center;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-preset:hover {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .bg-preset.selected {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(184, 134, 11, 0.5);
+        }
+
+        .bg-preset::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.2);
+            transition: opacity 0.2s ease;
+        }
+
+        .bg-preset:hover::after {
+            opacity: 0;
+        }
+
+        .bg-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .bg-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--muted);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .bg-btn:hover {
+            background: var(--accent);
+            color: #120800;
+            border-color: var(--accent);
+        }
+
+        .bg-btn.primary {
+            background: var(--accent);
+            color: #120800;
+            border-color: var(--accent);
+        }
+
+        .bg-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            background: var(--accent);
+            color: #120800;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 4px 16px rgba(184, 134, 11, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .bg-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(184, 134, 11, 0.4);
+        }
+
+        .bg-overlay-controls {
+            margin-bottom: 15px;
+        }
+
+        .overlay-slider {
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .overlay-slider input[type="range"] {
+            width: 100%;
+            background: transparent;
+            -webkit-appearance: none;
+        }
+
+        .overlay-slider input[type="range"]::-webkit-slider-track {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+        }
+
+        .overlay-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 40px 20px;
+            z-index: 2;
+            position: relative;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            background: linear-gradient(45deg, #d4af37, #b8860b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            margin-bottom: 8px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .hero-description {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: 40px;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.6;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .explore-btn {
+            display: inline-block;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #120800;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(184, 134, 11, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .explore-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .explore-btn:hover::before {
+            left: 100%;
+        }
+
+        .explore-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(184, 134, 11, 0.4);
+        }
+
+        .explore-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Features section */
+        .features-section {
+            padding: 80px 0;
+            background: linear-gradient(180deg, #0b0b0b 0%, #070707 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+        }
+
+        .feature-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            border-color: rgba(184, 134, 11, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #120800;
+            font-weight: bold;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        .feature-desc {
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Floating particles effect */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .hero-main {
+                background-attachment: scroll;
+                min-height: 90vh;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .explore-btn {
+                padding: 16px 32px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Custom header styles for index page */
+        .index-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background: rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Customizer Toggle Button -->
+    <button class="bg-toggle" id="bgToggle" title="Customize Background">
+        🎨
+    </button>
+
+    <!-- Background Customizer Panel -->
+    <div class="bg-customizer" id="bgCustomizer">
+        <h3>🖼️ Background Settings</h3>
+        
+        <div class="bg-input-group">
+            <label for="bgUrlInput">Custom Image URL</label>
+            <input type="url" id="bgUrlInput" class="bg-url-input" placeholder="https://your-image-url.jpg">
+        </div>
+
+        <div class="bg-input-group">
+            <label>Overlay Darkness</label>
+            <div class="overlay-slider">
+                <input type="range" id="overlaySlider" min="0" max="0.8" step="0.1" value="0.5">
+                <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); margin-top: 4px;">
+                    <span>Light</span>
+                    <span>Dark</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-input-group">
+            <label>Preset Backgrounds</label>
+            <div class="bg-preset-grid">
+                <div class="bg-preset" data-bg="https://images.unsplash.com/photo-1569529465841-dfecdab7503b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" 
+                     style="background-image: url('https://images.unsplash.com/photo-1569529465841-dfecdab7503b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')" 
+                     title="Luxury Bar"></div>
+                
+                <div class="bg-preset" data-bg="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" 
+                     style="background-image: url('https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')" 
+                     title="Wine Cellar"></div>
+                
+                <div class="bg-preset" data-bg="https://images.unsplash.com/photo-1551024601-bec78aea704b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" 
+                     style="background-image: url('https://images.unsplash.com/photo-1551024601-bec78aea704b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')" 
+                     title="Whisky Bottles"></div>
+                
+                <div class="bg-preset" data-bg="https://images.unsplash.com/photo-1470337458703-46ad1756a187?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" 
+                     style="background-image: url('https://images.unsplash.com/photo-1470337458703-46ad1756a187?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')" 
+                     title="Dark Bar"></div>
+
+                <div class="bg-preset" data-bg="https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" 
+                     style="background-image: url('https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')" 
+                     title="Cocktail Bar"></div>
+                
+                <div class="bg-preset" data-bg="https://images.unsplash.com/photo-1607619662634-3ac55ec2c56f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80" 
+                     style="background-image: url('https://images.unsplash.com/photo-1607619662634-3ac55ec2c56f?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')" 
+                     title="Luxury Lounge"></div>
+            </div>
+        </div>
+
+        <div class="bg-actions">
+            <button class="bg-btn" id="resetBg">Reset</button>
+            <button class="bg-btn primary" id="applyBg">Apply</button>
+            <button class="bg-btn" id="saveBg">Save</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="container">
+        <header class="header index-header">
+            <div class="brand">
+                <div class="logo">LL</div>
+                <div>
+                    <h1>Luxury Liquors</h1>
+                    <p>Premium Spirits Collection</p>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="menu.html">Products</a>
+                <a href="offers.html">Offers</a>
+                <a href="order.html">Order</a>
+            </nav>
+        </header>
+    </div>
+
+    <!-- Hero Section with Background Image -->
+    <section class="hero-main">
+        <!-- Floating Particles -->
+        <div class="particles" id="particles"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">Luxury Liquors</h1>
+            <p class="hero-subtitle">Premium Spirits • Exceptional Quality</p>
+            <p class="hero-description">
+                Discover our curated collection of the world's finest spirits. 
+                From aged whiskeys to premium vodkas, experience luxury delivered to your doorstep.
+            </p>
+            <a href="menu.html" class="explore-btn">
+                Explore Collection
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🥃</div>
+                    <h3 class="feature-title">Premium Collection</h3>
+                    <p class="feature-desc">
+                        Handpicked selection of the world's finest spirits, from rare single malts to luxury vodkas.
+                    </p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🚚</div>
+                    <h3 class="feature-title">Fast Delivery</h3>
+                    <p class="feature-desc">
+                        Quick and secure delivery within 2-5 days. Priority dispatch available for weekend orders.
+                    </p>
+                </div>
+                
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🏆</div>
+                    <h3 class="feature-title">Authentic Quality</h3>
+                    <p class="feature-desc">
+                        100% authentic products sourced directly from distilleries. Quality guaranteed on every bottle.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Offers Section -->
+    <section class="features-section" style="padding: 60px 0;">
+        <div class="container">
+            <h2 style="text-align: center; font-family: var(--brand-font); font-size: 2.2rem; margin-bottom: 40px; color: var(--accent);">
+                Current Offers
+            </h2>
+            <div class="offers" id="homeOffers">
+                <!-- Offers will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Luxury Liquors. Premium spirits delivered with excellence.</p>
+            <p style="margin-top: 8px; font-size: 12px; color: var(--muted);">
+                Please drink responsibly. Must be 21+ to purchase.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+    <script>
+        // Initialize particles effect
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+
+            for (let i = 0; i < particleCount; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.width = particle.style.height = Math.random() * 6 + 2 + 'px';
+                    particle.style.animationDelay = Math.random() * 15 + 's';
+                    particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                    particlesContainer.appendChild(particle);
+
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 25000);
+                }, i * 100);
+            }
+        }
+
+        // Scroll animations
+        function handleScrollAnimations() {
+            const elements = document.querySelectorAll('.animate-on-scroll');
+            const windowHeight = window.innerHeight;
+
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Background customizer functionality
+        const BackgroundCustomizer = {
+            panel: null,
+            toggle: null,
+            heroSection: null,
+            currentBg: '',
+            currentOverlay: 0.5,
+
+            init() {
+                this.panel = document.getElementById('bgCustomizer');
+                this.toggle = document.getElementById('bgToggle');
+                this.heroSection = document.querySelector('.hero-main');
+                
+                this.setupEventListeners();
+                this.loadSavedSettings();
+            },
+
+            setupEventListeners() {
+                // Toggle panel
+                this.toggle.addEventListener('click', () => this.togglePanel());
+                
+                // Close panel when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!this.panel.contains(e.target) && !this.toggle.contains(e.target)) {
+                        this.closePanel();
+                    }
+                });
+
+                // Custom URL input
+                document.getElementById('bgUrlInput').addEventListener('input', (e) => {
+                    this.currentBg = e.target.value;
+                });
+
+                // Overlay slider
+                document.getElementById('overlaySlider').addEventListener('input', (e) => {
+                    this.currentOverlay = parseFloat(e.target.value);
+                    this.updateOverlay();
+                });
+
+                // Preset backgrounds
+                document.querySelectorAll('.bg-preset').forEach(preset => {
+                    preset.addEventListener('click', () => {
+                        this.selectPreset(preset);
+                    });
+                });
+
+                // Action buttons
+                document.getElementById('applyBg').addEventListener('click', () => this.applyBackground());
+                document.getElementById('resetBg').addEventListener('click', () => this.resetBackground());
+                document.getElementById('saveBg').addEventListener('click', () => this.saveSettings());
+            },
+
+            togglePanel() {
+                this.panel.classList.toggle('active');
+            },
+
+            closePanel() {
+                this.panel.classList.remove('active');
+            },
+
+            selectPreset(preset) {
+                // Remove previous selection
+                document.querySelectorAll('.bg-preset').forEach(p => p.classList.remove('selected'));
+                
+                // Select current preset
+                preset.classList.add('selected');
+                this.currentBg = preset.dataset.bg;
+                
+                // Update URL input
+                document.getElementById('bgUrlInput').value = this.currentBg;
+            },
+
+            applyBackground() {
+                if (this.currentBg) {
+                    this.heroSection.style.setProperty('--hero-bg-image', `url('${this.currentBg}')`);
+                    this.showNotification('Background applied successfully!', 'success');
+                } else {
+                    this.showNotification('Please enter a valid image URL', 'error');
+                }
+            },
+
+            updateOverlay() {
+                const overlay = `linear-gradient(rgba(0,0,0,${this.currentOverlay}), rgba(0,0,0,${this.currentOverlay * 0.8}))`;
+                this.heroSection.style.background = `${overlay}, var(--hero-bg-image, url('https://images.unsplash.com/photo-1569529465841-dfecdab7503b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')) center/cover no-repeat`;
+            },
+
+            resetBackground() {
+                this.currentBg = 'https://images.unsplash.com/photo-1569529465841-dfecdab7503b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80';
+                this.currentOverlay = 0.5;
+                
+                document.getElementById('bgUrlInput').value = '';
+                document.getElementById('overlaySlider').value = '0.5';
+                document.querySelectorAll('.bg-preset').forEach(p => p.classList.remove('selected'));
+                
+                this.heroSection.style.removeProperty('--hero-bg-image');
+                this.updateOverlay();
+                
+                this.showNotification('Background reset to default', 'info');
+            },
+
+            saveSettings() {
+                const settings = {
+                    background: this.currentBg,
+                    overlay: this.currentOverlay
+                };
+                
+                try {
+                    localStorage.setItem('luxe_bg_settings', JSON.stringify(settings));
+                    this.showNotification('Settings saved successfully!', 'success');
+                } catch (error) {
+                    this.showNotification('Failed to save settings', 'error');
+                }
+            },
+
+            loadSavedSettings() {
+                try {
+                    const saved = localStorage.getItem('luxe_bg_settings');
+                    if (saved) {
+                        const settings = JSON.parse(saved);
+                        this.currentBg = settings.background || '';
+                        this.currentOverlay = settings.overlay || 0.5;
+                        
+                        if (this.currentBg) {
+                            document.getElementById('bgUrlInput').value = this.currentBg;
+                            this.applyBackground();
+                        }
+                        
+                        document.getElementById('overlaySlider').value = this.currentOverlay;
+                        this.updateOverlay();
+                    }
+                } catch (error) {
+                    console.log('No saved background settings found');
+                }
+            },
+
+            showNotification(message, type) {
+                // Remove existing notification
+                const existing = document.querySelector('.bg-notification');
+                if (existing) existing.remove();
+
+                const notification = document.createElement('div');
+                notification.className = `bg-notification bg-notification-${type}`;
+                notification.style.cssText = `
+                    position: fixed;
+                    bottom: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? 'var(--accent)' : type === 'error' ? '#e74c3c' : 'var(--panel)'};
+                    color: ${type === 'success' ? '#120800' : '#fff'};
+                    padding: 12px 16px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    z-index: 1002;
+                    font-size: 13px;
+                    font-weight: 500;
+                    animation: slideInUp 0.3s ease;
+                `;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.animation = 'slideOutDown 0.3s ease forwards';
+                    setTimeout(() => notification.remove(), 300);
+                }, 3000);
+            }
+        };
+
+        // Add CSS animations for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInUp {
+                from { transform: translateY(100%); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            @keyframes slideOutDown {
+                from { transform: translateY(0); opacity: 1; }
+                to { transform: translateY(100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize home page
+        function initHomePage() {
+            // Initialize background customizer
+            BackgroundCustomizer.init();
+
+            // Load and display offers
+            if (typeof window.LuxuryLiquorApp !== 'undefined') {
+                const offersContainer = document.getElementById('homeOffers');
+                if (offersContainer && PRODUCT_CATALOG) {
+                    PRODUCT_CATALOG.offers.forEach(offer => {
+                        const offerElement = document.createElement('div');
+                        offerElement.className = 'offer animate-on-scroll';
+                        offerElement.innerHTML = `
+                            <div class="title">${offer.title}</div>
+                            <div class="sub">${offer.description}</div>
+                        `;
+                        offersContainer.appendChild(offerElement);
+                    });
+                }
+            }
+
+            // Start particles animation
+            createParticles();
+            setInterval(createParticles, 5000); // Recreate particles every 5 seconds
+
+            // Handle scroll animations
+            handleScrollAnimations();
+            window.addEventListener('scroll', handleScrollAnimations);
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initHomePage);
+        } else {
+            initHomePage();
+        }
+
+        // Add some interactivity to the hero section
+        document.addEventListener('mousemove', (e) => {
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent && window.innerWidth > 768) {
+                const x = (e.clientX - window.innerWidth / 2) / 50;
+                const y = (e.clientY - window.innerHeight / 2) / 50;
+                
+                heroContent.style.transform = `translate(${x}px, ${y}px)`;
+            }
+        });
+    </script>
+</body>
+</html>

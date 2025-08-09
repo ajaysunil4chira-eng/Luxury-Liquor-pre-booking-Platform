@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Order Confirmation — Wrong Pour</title>
+  <style>
+    :root {
+      --primary: #ffd700;
+      --glass: rgba(255, 255, 255, 0.1);
+      --muted: #ccc;
+      --border: rgba(255, 215, 0, 0.3);
+      --error: #ff6b6b;
+      --success: #51cf66;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #000 0%, #111 50%, #222 100%);
+      min-height: 100vh;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo {
+      background: linear-gradient(135deg, var(--primary), #ffd700);
+      color: black;
+      font-weight: bold;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav a {
+      color: white;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+
+    .nav a:hover {
+      background: rgba(255, 215, 0, 0.1);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 15px;
+      border: 1px solid var(--border);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .card h3 {
+      color: var(--primary);
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .card h3::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), #ffd700);
+      border-radius: 2px;
+    }
+
+    /* Loading State */
+    .loading {
+      text-align: center;
+      padding: 60px 40px;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(255, 215, 0, 0.3);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Success Section */
+    .success-section {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .success-icon {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 20px;
+      background: linear-gradient(45deg, var(--success), #40c057);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      color: white;
+      animation: bounce 0.6s ease-in-out;
+      box-shadow: 0 8px 25px rgba(81, 207, 102, 0.3);
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-15px);
+      }
+      60% {
+        transform: translateY(-8px);
+      }
+    }
+
+    .success-title {
+      font-size: 2.2rem;
+      color: var(--success);
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .success-message {
+      font-size: 1.1rem;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .order-id-display {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+      border: 2px solid var(--primary);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 20px 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    /* Order Details */
+    .order-details {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 15px;
+      padding: 30px;
+      margin: 30px 0;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .details-title {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .detail-label {
+      font-weight: 600;
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    .detail-value {
+      color: white;
+      font-size: 1rem;
+    }
+
+    .total-row {
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 215, 0, 0.05));
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 20px;
+    }
+
+    .total-row .detail-label,
+    .total-row .detail-value {
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    /* Status Badge */
+    .status-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--success), #40c057);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      min-width: 150px;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), #ffd700);
+      color: black;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    }
+
+    .btn-secondary:hover {
+      background: var(--primary);
+      color: black;
+    }
+
+    /* No Order State */
+    .no-order {
+      text-align: center;
+      color: var(--error);
+      padding: 60px 40px;
+    }
+
+    .no-order-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+
+    .no-order h4 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .no-order p {
+      font-size: 1rem;
+      margin-bottom: 30px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 30px 20px;
+      color: #888;
+      font-size: 0.9rem;
+      border-top: 1px solid rgba(255, 215, 0, 0.1);
+      margin-top: auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .nav {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+
+      .card {
+        padding: 25px;
+      }
+
+      .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="brand">
+        <div class="logo">WP</div>
+        <div>
+          <h1>Wrong Pour</h1>
+          <p>Order Confirmation</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="order.html">New Order</a>
+      </nav>
+    </header>
+
+    <div class="main-content">
+      <section class="card">
+        <h3>Order Confirmation</h3>
+        <div id="confirmationContent">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading your order details...</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="footer">© 2025 Wrong Pour • Premium Liquor Experience</footer>
+  </div>
+
+  <script>
+    // Global variables
+    let orderData = null;
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Confirmation page initialized');
+      initConfirmationPage();
+    });
+
+    function initConfirmationPage() {
+      // Add a small delay to show loading state
+      setTimeout(() => {
+        loadOrderData();
+        displayConfirmation();
+      }, 500);
+    }
+
+    function loadOrderData() {
+      // Try to get order data from multiple sources in priority order
+      orderData = getOrderFromURL() || 
+                  getOrderFromSessionStorage() || 
+                  getOrderFromLocalStorage() ||
+                  getMockOrderData(); // Fallback for testing
+      
+      console.log('Loaded order data:', orderData);
+    }
+
+    function getOrderFromURL() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (urlParams.has('orderId')) {
+          const orderData = {
+            orderId: urlParams.get('orderId'),
+            product: decodeURIComponent(urlParams.get('product') || 'Unknown Product'),
+            quantity: parseInt(urlParams.get('quantity')) || 1,
+            total: parseFloat(urlParams.get('total')) || 0,
+            customer: {
+              name: decodeURIComponent(urlParams.get('customerName') || 'Guest'),
+              phone: urlParams.get('phone') || 'Not provided',
+              address: decodeURIComponent(urlParams.get('address') || 'Not provided'),
+              city: decodeURIComponent(urlParams.get('city') || 'Not provided'),
+              pin: urlParams.get('pin') || 'Not provided'
+            },
+            payment: urlParams.get('payment') || 'cod',
+            status: urlParams.get('status') || 'confirmed',
+            timestamp: urlParams.get('timestamp') || new Date().toISOString()
+          };
+          
+          // Store in sessionStorage for future reference
+          try {
+            sessionStorage.setItem('confirmedOrder', JSON.stringify(orderData));
+          } catch (e) {
+            console.warn('Could not store in sessionStorage:', e);
+          }
+          
+          return orderData;
+        }
+      } catch (e) {
+        console.warn('Error parsing URL parameters:', e);
+      }
+      return null;
+    }
+
+    function getOrderFromSessionStorage() {
+      try {
+        const storedOrder = sessionStorage.getItem('confirmedOrder');
+        if (storedOrder) {
+          return JSON.parse(storedOrder);
+        }
+      } catch (e) {
+        console.warn('Error reading from sessionStorage:', e);
+      }
+      return null;
+    }
+
+    function getOrderFromLocalStorage() {
+      try {
+        const storedOrder = localStorage.getItem('lastConfirmedOrder');
+        if (storedOrder) {
+          return JSON.parse(storedOrder);
+        }
+      } catch (e) {
+        console.warn('Error reading from localStorage:', e);
+      }
+      return null;
+    }
+
+    function getMockOrderData() {
+      // Fallback mock data for testing when no real order data is available
+      return {
+        orderId: 'WP' + Date.now(),
+        product: 'Premium Whiskey',
+        quantity: 1,
+        total: 2500,
+        customer: {
+          name: 'John Doe',
+          phone: '+91 9876543210',
+          address: '123 Sample Street',
+          city: 'Alappuzha',
+          pin: '688001'
+        },
+        payment: 'cod',
+        status: 'confirmed',
+        timestamp: new Date().toISOString()
+      };
+    }
+
+    function displayConfirmation() {
+      const contentDiv = document.getElementById('confirmationContent');
+      
+      if (orderData) {
+        contentDiv.innerHTML = generateConfirmationHTML(orderData);
+      } else {
+        contentDiv.innerHTML = generateNoOrderHTML();
+      }
+    }
+
+    function generateConfirmationHTML(data) {
+      const deliveryAddress = `${data.customer.address}, ${data.customer.city} - ${data.customer.pin}`;
+      const orderDate = new Date(data.timestamp || Date.now());
+      const estimatedDelivery = new Date(orderDate.getTime() + (2 * 60 * 60 * 1000)); // 2 hours later
+      
+      return `
+        <div class="success-section">
+          <div class="success-icon">✓</div>
+          <div class="success-title">Order Confirmed!</div>
+          <div class="success-message">
+            Your order has been successfully placed. You will receive a confirmation call within 15 minutes.
+          </div>
+          <div class="order-id-display">
+            Order ID: ${data.orderId}
+          </div>
+        </div>
+
+        <div class="order-details">
+          <div class="details-title">Order Details</div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Product:</span>
+            <span class="detail-value">${escapeHtml(data.product)}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Quantity:</span>
+            <span class="detail-value">${data.quantity} ${data.quantity > 1 ? 'bottles' : 'bottle'}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Customer Name:</span>
+            <span class="detail-value">${escapeHtml(data.customer.name)}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Phone Number:</span>
+            <span class="detail-value">${escapeHtml(data.customer.phone)}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Delivery Address:</span>
+            <span class="detail-value">${escapeHtml(deliveryAddress)}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Payment Method:</span>
+            <span class="detail-value">${formatPaymentMethod(data.payment)}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Order Status:</span>
+            <span class="detail-value"><span class="status-badge">${data.status}</span></span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Order Date:</span>
+            <span class="detail-value">${formatDate(orderDate)}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Estimated Delivery:</span>
+            <span class="detail-value">${formatDateTime(estimatedDelivery)}</span>
+          </div>
+          
+          <div class="total-row detail-row">
+            <span class="detail-label">Total Amount:</span>
+            <span class="detail-value">₹${formatCurrency(data.total || 0)}</span>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <a href="index.html" class="btn btn-primary">Back to Home</a>
+          <a href="menu.html" class="btn btn-secondary">Order Again</a>
+          <button onclick="printOrder()" class="btn btn-secondary">Print Order</button>
+          <button onclick="shareOrder()" class="btn btn-secondary">Share Order</button>
+        </div>
+      `;
+    }
+
+    function generateNoOrderHTML() {
+      return `
+        <div class="no-order">
+          <div class="no-order-icon">📋</div>
+          <h4>No Order Found</h4>
+          <p>We couldn't find your order details. Please make sure you have a valid order confirmation link.</p>
+          <div class="action-buttons">
+            <a href="menu.html" class="btn btn-primary">Place New Order</a>
+            <a href="index.html" class="btn btn-secondary">Back to Home</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function formatPaymentMethod(payment) {
+      const methods = {
+        'cod': 'Cash on Delivery',
+        'card': 'Credit/Debit Card',
+        'upi': 'UPI Payment',
+        'wallet': 'Digital Wallet'
+      };
+      return methods[payment] || payment.toUpperCase();
+    }
+
+    function formatDate(date) {
+      return date.toLocaleDateString('en-IN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    function formatDateTime(date) {
+      return date.toLocaleDateString('en-IN', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+    }
+
+    function formatCurrency(amount) {
+      return amount.toLocaleString('en-IN');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function printOrder() {
+      if (orderData) {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Order Confirmation - ${orderData.orderId}</title>
+              <style>
+                body { font-family: Arial, sans-serif; margin: 20px; background: white; color: black; }
+                .header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #000; padding-bottom: 20px; }
+                .logo { font-size: 24px; font-weight: bold; margin-bottom: 10px; }
+                .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; padding: 5px 0; border-bottom: 1px solid #eee; }
+                .detail-row:last-child { border-bottom: 2px solid #000; }
+                .total { font-weight: bold; font-size: 1.2em; margin-top: 20px; background: #f5f5f5; padding: 10px; }
+                .footer { text-align: center; margin-top: 30px; font-size: 0.8em; color: #666; }
+                @media print { body { margin: 0; } }
+              </style>
+            </head>
+            <body>
+              <div class="header">
+                <div class="logo">Wrong Pour</div>
+                <h2>Order Confirmation</h2>
+                <p><strong>Order ID: ${orderData.orderId}</strong></p>
+                <p>Date: ${formatDate(new Date(orderData.timestamp))}</p>
+              </div>
+              
+              <div class="detail-row"><span><strong>Product:</strong></span><span>${escapeHtml(orderData.product)}</span></div>
+              <div class="detail-row"><span><strong>Quantity:</strong></span><span>${orderData.quantity} ${orderData.quantity > 1 ? 'bottles' : 'bottle'}</span></div>
+              <div class="detail-row"><span><strong>Customer:</strong></span><span>${escapeHtml(orderData.customer.name)}</span></div>
+              <div class="detail-row"><span><strong>Phone:</strong></span><span>${escapeHtml(orderData.customer.phone)}</span></div>
+              <div class="detail-row"><span><strong>Address:</strong></span><span>${escapeHtml(orderData.customer.address)}, ${escapeHtml(orderData.customer.city)} - ${orderData.customer.pin}</span></div>
+              <div class="detail-row"><span><strong>Payment Method:</strong></span><span>${formatPaymentMethod(orderData.payment)}</span></div>
+              <div class="detail-row"><span><strong>Status:</strong></span><span>${orderData.status.toUpperCase()}</span></div>
+              
+              <div class="detail-row total"><span><strong>Total Amount:</strong></span><span><strong>₹${formatCurrency(orderData.total || 0)}</strong></span></div>
+              
+              <div class="footer">
+                <p>Thank you for choosing Wrong Pour!</p>
+                <p>For any queries, contact us at support@wrongpour.com</p>
+              </div>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+      }
+    }
+
+    function shareOrder() {
+      if (orderData && navigator.share) {
+        navigator.share({
+          title: `Order Confirmation - ${orderData.orderId}`,
+          text: `My order from Wrong Pour has been confirmed!\nOrder ID: ${orderData.orderId}\nProduct: ${orderData.product}\nTotal: ₹${formatCurrency(orderData.total)}`,
+          url: window.location.href
+        }).catch(console.error);
+      } else if (orderData) {
+        // Fallback to copying link
+        const shareText = `Order confirmed at Wrong Pour!\nOrder ID: ${orderData.orderId}\nProduct: ${orderData.product}\nTotal: ₹${formatCurrency(orderData.total)}\nView details: ${window.location.href}`;
+        
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(shareText).then(() => {
+            alert('Order details copied to clipboard!');
+          }).catch(() => {
+            promptManualCopy(shareText);
+          });
+        } else {
+          promptManualCopy(shareText);
+        }
+      }
+    }
+
+    function promptManualCopy(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      alert('Order details copied to clipboard!');
+    }
+
+    // Add error handling for the entire page
+    window.addEventListener('error', function(e) {
+      console.error('Page error:', e.error);
+    });
+
+    // Add unhandled promise rejection handling
+    window.addEventListener('unhandledrejection', function(e) {
+      console.error('Unhandled promise rejection:', e.reason);
+    });
+  </script>
+</body>
+</html>
